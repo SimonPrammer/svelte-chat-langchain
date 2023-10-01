@@ -1,9 +1,9 @@
 <script>
+	import '@picocss/pico'
 	import { useChat } from 'ai/svelte';
 
 	//page data
 	export let data;
-	$: console.log('data:', data);
 
 	const { input, handleSubmit, messages } = useChat();
 
