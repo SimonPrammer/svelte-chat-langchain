@@ -3,29 +3,21 @@
 import { json } from '@sveltejs/kit';
 import { compile } from 'html-to-text';
 import { RecursiveUrlLoader } from 'langchain/document_loaders/web/recursive_url';
-import { testDocs } from './testDocs';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
-import { Document } from 'langchain/document';
+import type { Document } from 'langchain/document';
 import { VercelPostgres } from 'langchain/vectorstores/vercel_postgres';
-import { POSTGRES_URL, PRIVATE_OPENAI_KEY } from '$env/static/private';
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { sql } from '@vercel/postgres';
-
-process.env.POSTGRES_URL = POSTGRES_URL;
 
 async function loadApiDocs() {
 	const url = 'https://js.langchain.com/docs/get_started/introduction';
 
-	const compiledConvert = compile({ wordwrap: 130 }); // returns (text: string) => string;
+	const compiledConvert = compile({ wordwrap: 130 });
 
 	const loader = new RecursiveUrlLoader(url, {
 		extractor: compiledConvert,
-		maxDepth: 1, //8
+		maxDepth: 8,
 		preventOutside: true,
-		// exclude_dirs=(
-		//             "https://api.python.langchain.com/en/latest/_sources",
-		//             "https://api.python.langchain.com/en/latest/_modules",
-		//         ),
 		excludeDirs: ['https://js.langchain.com/docs/api/']
 	});
 
@@ -42,24 +34,16 @@ async function splitDocs(docs: Document[]) {
 }
 
 async function initVectorDb() {
-	// Config is only required if you want to override default values.
 	const config = {
-		tableName: 'vs_langchain_docs',
-		postgresConnectionOptions: {
-			connectionString: POSTGRES_URL
-			//   connectionString: "postgres://<username>:<password>@<hostname>:<port>/<dbname>",
-		}
-		// columns: {
-		// 	idColumnName: 'id',
-		// 	vectorColumnName: 'vector',
-		// 	contentColumnName: 'content',
-		// 	metadataColumnName: 'metadata'
+		tableName: 'langchain_docs_embeddings'
+		// postgresConnectionOptions: {
+		// 	// connectionString: POSTGRES_URL
+		// 	// connectionString: "postgres://<username>:<password>@<hostname>:<port>/<dbname>",
 		// }
 	};
 
 	return await VercelPostgres.initialize(
 		new OpenAIEmbeddings({
-			openAIApiKey: PRIVATE_OPENAI_KEY,
 			batchSize: 512 // Default value if omitted is 512. Max is 2048
 		}),
 		config
@@ -69,30 +53,30 @@ async function initVectorDb() {
 //ingest docs
 export const POST = async ({ request }) => {
 	try {
+		if (!process.env.POSTGRES_URL) throw new Error('No POSTGRES_URL env variable set!');
+		if (!process.env.OPENAI_API_KEY) throw new Error('No OPENAI_API_KEY env variable set!');
+
+		let result = null;
+		console.log('POST  result:', result);
 		//if already exists
 		const exists = await sql`
-  SELECT EXISTS (
-    SELECT FROM information_schema.tables 
-    WHERE table_schema = 'public'
-    AND table_name = 'vs_langchain_docs'
-  );
-`;
-		console.log('POST  exists:', exists?.rows[0]?.exists);
+			SELECT EXISTS (
+				SELECT FROM information_schema.tables 
+				WHERE table_schema = 'public'
+				AND table_name = 'langchain_docs_embeddings'
+			);
+		`;
 
 		if (!exists?.rows[0]?.exists) {
-			const docs = testDocs; //await loadApiDocs();
-
-			//could clean up docs here with a LLM chain that looks for duplicate text
-
-			const newDocs = await splitDocs(docs);
+			const docs = await loadApiDocs();
+			const split_docs = await splitDocs(docs);
 
 			const vercelPostgresStore = await initVectorDb();
-			const embeddingIds = await vercelPostgresStore.addDocuments([...docs]);
+			result = await vercelPostgresStore.addDocuments([...split_docs]);
 
-			console.log('POST  embeddingIds:', embeddingIds);
-			console.log('POST  splitDocs:', newDocs);
+			console.log('POST  embeddingIds:', result);
 		} else {
-			throw new Error('Already ingested!');
+			throw new Error('Table already exists! Please delete the table first and try again');
 		}
 
 		return json({ result, error: false }, { status: 200 });

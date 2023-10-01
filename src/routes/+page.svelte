@@ -1,5 +1,10 @@
 <script>
 	import { useChat } from 'ai/svelte';
+
+	//page data
+	export let data;
+	$: console.log('data:', data);
+
 	const { input, handleSubmit, messages } = useChat();
 
 	async function ingest() {
@@ -14,21 +19,61 @@
 	}
 </script>
 
-<button
-	class="btn variant-soft-primary"
-	on:click={async () => {
-		await ingest();
-	}}>ingest</button
->
+<!-- only show the populate button if vector db does not exist yet -->
+{#if !data.vectorDbExists}
+	<header class="ingest-container">
+		<button
+			on:click={async () => {
+				await ingest();
+			}}>Populate Vector Store</button
+		>
+	</header>
+{/if}
 
-<div>
+<div class="messages-container">
 	<ul>
 		{#each $messages as message}
 			<li>{message.role}: {message.content}</li>
 		{/each}
 	</ul>
+</div>
+
+<footer>
 	<form on:submit={handleSubmit}>
-		<input bind:value={$input} />
+		<input bind:value={$input} placeholder="Ask something about Langchain..." />
 		<button type="submit">Send</button>
 	</form>
-</div>
+</footer>
+
+<style>
+	button {
+		max-width: 120px;
+	}
+	/* .messages-container {
+		padding: 1rem;
+		margin: 0 auto;
+		min-height: 70vh;
+		width: 100%;
+		background-color: black;
+	} */
+
+	form {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 0.5rem;
+	}
+	footer {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 0.5rem;
+	}
+	header {
+		position: fixed;
+		top: 0;
+		right: 0;
+		padding: 0.5rem;
+	}
+</style>
