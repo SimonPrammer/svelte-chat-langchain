@@ -49,13 +49,6 @@
 	button {
 		max-width: 120px;
 	}
-	/* .messages-container {
-		padding: 1rem;
-		margin: 0 auto;
-		min-height: 70vh;
-		width: 100%;
-		background-color: black;
-	} */
 
 	form {
 		display: flex;

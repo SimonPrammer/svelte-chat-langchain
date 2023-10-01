@@ -1,38 +1,42 @@
-# create-svelte
+# Svelte Chat Langchain (mini version)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+This is a (mini) version of Chat Langchain (https://github.com/langchain-ai/chat-langchain) implemented in SvelteKit!
+I call it a mini version because it does not include some of the more advanced features of the original Chat Langchain, such as Indexing / Record Management, user feedback and stream parsing to display sources.
 
-## Creating a project
+It does however include core features of QA Applications, such as:
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Ingestion
+  - Document Loading (from Langchain JS docs https://js.langchain.com/docs/get_started/introduction)
+  - Document Splitting
+  - Setting up and using VercelPostgres as VectorDb
+- Retrieval
+- Complex & Conditional Chaining with Langchain Expression Language
+- Streaming (simplified with Vercel AI SDK)
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+This repository is fully inspired by the original Chat Langchain repository. All credit goes to them.
 
-# create a new project in my-app
-npm create svelte@latest my-app
+# Official Langchain Chat Website
+
+https://chat.langchain.com/
+
+# Official Langchain Chat Github
+
+https://github.com/langchain-ai/chat-langchain
+
+# Official Langchain Blog
+
+https://blog.langchain.dev/building-chat-langchain-2/
+
+## Setup
+
+Install dependencies.
+
+```sh
+pnpm i
 ```
 
-## Developing
+Run the development server at http://localhost:5173/.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```sh
+pnpm run dev
 ```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
