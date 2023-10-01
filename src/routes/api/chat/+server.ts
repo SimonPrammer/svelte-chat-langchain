@@ -46,6 +46,9 @@ const getRetriever = async () => {
 
 //server endpoint for chatGpt Stream Chat
 export const POST = async ({ request }) => {
+	if (!process.env.POSTGRES_URL) throw new Error('No POSTGRES_URL env variable set!');
+	if (!process.env.OPENAI_API_KEY) throw new Error('No OPENAI_API_KEY env variable set!');
+
 	const { messages } = await request.json();
 	if (!messages) throw new Error('No messages!');
 
