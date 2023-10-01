@@ -6,9 +6,12 @@ import { RecursiveUrlLoader } from 'langchain/document_loaders/web/recursive_url
 import { testDocs } from './testDocs';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { Document } from 'langchain/document';
-import { CohereEmbeddings } from 'langchain/embeddings/cohere';
 import { VercelPostgres } from 'langchain/vectorstores/vercel_postgres';
-import { POSTGRES_URL } from '$env/static/private';
+import { POSTGRES_URL, PRIVATE_OPENAI_KEY } from '$env/static/private';
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
+import { sql } from '@vercel/postgres';
+
+process.env.POSTGRES_URL = POSTGRES_URL;
 
 async function loadApiDocs() {
 	const url = 'https://js.langchain.com/docs/get_started/introduction';
@@ -38,55 +41,69 @@ async function splitDocs(docs: Document[]) {
 	return await splitter.splitDocuments([...docs]);
 }
 
-async function initVectorDb(docs: Document[]) {
+async function initVectorDb() {
 	// Config is only required if you want to override default values.
 	const config = {
-		tableName: 'testvercelvectorstorelangchain',
+		tableName: 'vs_langchain_docs',
 		postgresConnectionOptions: {
 			connectionString: POSTGRES_URL
 			//   connectionString: "postgres://<username>:<password>@<hostname>:<port>/<dbname>",
 		}
 		// columns: {
-		//   idColumnName: "id",
-		//   vectorColumnName: "vector",
-		//   contentColumnName: "content",
-		//   metadataColumnName: "metadata",
-		// },
+		// 	idColumnName: 'id',
+		// 	vectorColumnName: 'vector',
+		// 	contentColumnName: 'content',
+		// 	metadataColumnName: 'metadata'
+		// }
 	};
 
-	const vercelPostgresStore = await VercelPostgres.initialize(new CohereEmbeddings(), config);
-
-	return await vercelPostgresStore.addDocuments([...docs]);
+	return await VercelPostgres.initialize(
+		new OpenAIEmbeddings({
+			openAIApiKey: PRIVATE_OPENAI_KEY,
+			batchSize: 512 // Default value if omitted is 512. Max is 2048
+		}),
+		config
+	);
 }
 
 //ingest docs
 export const POST = async ({ request }) => {
 	try {
-		const docs = testDocs; //await loadApiDocs();
-		// console.log(testDocs);
+		//if already exists
+		const exists = await sql`
+  SELECT EXISTS (
+    SELECT FROM information_schema.tables 
+    WHERE table_schema = 'public'
+    AND table_name = 'vs_langchain_docs'
+  );
+`;
+		console.log('POST  exists:', exists?.rows[0]?.exists);
 
-		const newDocs = await splitDocs(docs);
+		if (!exists?.rows[0]?.exists) {
+			const docs = testDocs; //await loadApiDocs();
 
-		const embeddingIds = await initVectorDb(newDocs);
-		console.log('POST  embeddingIds:', embeddingIds);
-		// console.log('POST  splitDocs:', newDocs);
+			//could clean up docs here with a LLM chain that looks for duplicate text
 
-		//could clean up docs here with a LLM chain that looks for duplicate text
+			const newDocs = await splitDocs(docs);
 
-		// text_splitter = RecursiveCharacterTextSplitter(chunk_size=4000, chunk_overlap=200)
-		// docs_transformed = text_splitter.split_documents(
-		// 	docs_from_documentation + docs_from_api
-		// )
+			const vercelPostgresStore = await initVectorDb();
+			const embeddingIds = await vercelPostgresStore.addDocuments([...docs]);
 
-		return json({ result: { docs }, error: false }, { status: 200 });
+			console.log('POST  embeddingIds:', embeddingIds);
+			console.log('POST  splitDocs:', newDocs);
+		} else {
+			throw new Error('Already ingested!');
+		}
+
+		return json({ result, error: false }, { status: 200 });
 	} catch (err) {
 		console.log('commonHandleError  err:', err);
-		// return json(
-		// 	{
-		// 		error: true,
-		// 		errorMsg: err?.message ? err.message : 'There was an unexpected error. Please try again.'
-		// 	},
-		// 	{ status: 500 }
-		// );
+		return json(
+			{
+				error: true,
+				errorMsg: err?.message ? err.message : 'There was an unexpected error. Please try again.'
+			},
+			{ status: 500 }
+		);
 	}
 };
