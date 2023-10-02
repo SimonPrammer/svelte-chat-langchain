@@ -17,18 +17,15 @@ This app features:
 
 I call it a mini version because it does however not include some of the more advanced features of the original Chat Langchain, such as Indexing / Record Management, user feedback and stream parsing to display sources.
 
-This repository is fully inspired by the original Chat Langchain repository. All credit goes to them.
+This repository is fully inspired by the original Chat Langchain repository:
 
-# Official Langchain Chat Website
-
+Langchain Chat Website:
 https://chat.langchain.com/
 
-# Official Langchain Chat Github
-
+Langchain Chat Github:
 https://github.com/langchain-ai/chat-langchain
 
-# Official Langchain Blog
-
+Langchain Blog:
 https://blog.langchain.dev/building-chat-langchain-2/
 
 ## Setup
