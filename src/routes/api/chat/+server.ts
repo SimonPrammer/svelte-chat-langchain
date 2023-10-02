@@ -44,7 +44,7 @@ const getRetriever = async () => {
 	return vectorstore.asRetriever({ k: 6 });
 };
 
-//server endpoint for chatGpt Stream Chat
+//server endpoint
 export const POST = async ({ request }) => {
 	if (!process.env.POSTGRES_URL) throw new Error('No POSTGRES_URL env variable set!');
 	if (!process.env.OPENAI_API_KEY) throw new Error('No OPENAI_API_KEY env variable set!');
@@ -52,7 +52,7 @@ export const POST = async ({ request }) => {
 	const { messages } = await request.json();
 	if (!messages) throw new Error('No messages!');
 
-	//Using Vercel AI SDK Message type but could also convert messages to Langchain Message type
+	//Message = Vercel AI SDK Type
 	type ChainInput = {
 		question: Message;
 		chat_history: Message[];
@@ -60,9 +60,10 @@ export const POST = async ({ request }) => {
 
 	const chain = RunnableSequence.from([
 		{
-			//retriever sequence. if messages > means there is a history > condense history chain
+			//retriever sequence for context
 			context: RunnableSequence.from([
 				(input: ChainInput) =>
+					//if messages > 1 -> condense history chain
 					messages.length > 1
 						? RunnableSequence.from([
 								{
@@ -79,7 +80,8 @@ export const POST = async ({ request }) => {
 								}),
 								new StringOutputParser()
 						  ])
-						: input.question.content,
+						: //else just return question
+						  input.question.content,
 				getRetriever,
 				(docs: Document[]) =>
 					docs.map((doc, i) => `<doc id='${i}'>${doc.pageContent}</doc>`).join('\n')
@@ -90,8 +92,7 @@ export const POST = async ({ request }) => {
 		},
 		ChatPromptTemplate.fromMessages([
 			['system', RESPONSE_TEMPLATE],
-			// new MessagesPlaceholder('chat_history'),
-			['human', `{question}`]
+			['human', `Chat History:{chat_history} {question}`]
 		]),
 		new ChatOpenAI({
 			modelName: 'gpt-3.5-turbo-16k',

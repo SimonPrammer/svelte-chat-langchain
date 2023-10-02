@@ -73,15 +73,12 @@ export const POST = async ({ request }) => {
 
 			const vercelPostgresStore = await initVectorDb();
 			result = await vercelPostgresStore.addDocuments([...split_docs]);
-
-			console.log('POST  embeddingIds:', result);
 		} else {
 			throw new Error('Table already exists! Please delete the table first and try again');
 		}
 
 		return json({ result, error: false }, { status: 200 });
 	} catch (err) {
-		console.log('commonHandleError  err:', err);
 		return json(
 			{
 				error: true,
