@@ -1,9 +1,10 @@
 <script>
-	import '@picocss/pico'
+	import '@picocss/pico';
 	import { useChat } from 'ai/svelte';
 
 	//page data
 	export let data;
+	// $: console.log('data:', data);
 
 	const { input, handleSubmit, messages } = useChat();
 
@@ -20,7 +21,7 @@
 </script>
 
 <!-- only show the populate button if vector db does not exist yet -->
-{#if !data.vectorDbExists}
+{#if data.isEnvSet && !data.vectorDbExists}
 	<header class="ingest-container">
 		<button
 			on:click={async () => {
@@ -39,9 +40,19 @@
 </div>
 
 <footer>
+	{#if !data.isEnvSet}
+		<p>
+			Make sure to set all necessary environment variables before chatting! See the README file for
+			more information!
+		</p>
+	{/if}
 	<form on:submit={handleSubmit}>
-		<input bind:value={$input} placeholder="Ask something about Langchain..." />
-		<button type="submit">Send</button>
+		<input
+			disabled={!data.isEnvSet}
+			bind:value={$input}
+			placeholder="Ask something about Langchain..."
+		/>
+		<button disabled={!data.isEnvSet} type="submit">Send</button>
 	</form>
 </footer>
 
