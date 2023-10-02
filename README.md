@@ -1,8 +1,9 @@
 # Svelte Chat Langchain (mini version)
 
-This is a (mini) version of Chat Langchain (https://github.com/langchain-ai/chat-langchain) implemented in SvelteKit!
+This is a (mini) version of Chat Langchain implemented in SvelteKit!
 
-This repo can be a source of inspiration and starting point for developers looking to try their hand on a QA chatbot over Documents. It is held purposefully simple and easy to understand while still holding some complexity to be a good example.
+This repo can be a source of inspiration and starting point for developers looking to try their hand on a QA chatbot over Documents. 
+It is held purposefully simple and easy to understand while still holding some complexity to be a good example.
 
 This app features:
 

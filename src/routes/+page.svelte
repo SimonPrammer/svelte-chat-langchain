@@ -4,7 +4,7 @@
 
 	//page data
 	export let data;
-	$: console.log('data:', data);
+	// $: console.log('data:', data);
 
 	const { input, handleSubmit, messages } = useChat();
 
