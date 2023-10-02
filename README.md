@@ -1,10 +1,10 @@
-# Svelte Chat Langchain (mini version)
+# Svelte Chat Langchain (Template)
 
-This is a "mini" version of "Chat LangChain" implemented with SvelteKit, Vercel AI SDK and or course Langchain!
+This is a minimal version of "Chat LangChain" implemented with SvelteKit, Vercel AI SDK and or course Langchain!
 
-This repository can be a source of inspiration and starting point for developers looking to try their hand on a QA chatbot over Documents.
+The Template is held purposefully simple in its implementation while still beeing fully functional.
 
-I call it a "mini" version because it the app is held purposefully simple in its implementation while still beeing fully functional.
+It is best used as reference to learn the basics of a QA chatbot over Documents or a starting point for your own custom implementation.
 
 If you are completely new to Chatbots or any of the technologies used in this repository, this blog post is a good starting point: https://simon-prammer.vercel.app/blog/post/sveltekit-langchain
 
@@ -15,10 +15,10 @@ This app features:
 - Ingestion
   - Document Loading (from Langchain JS docs https://js.langchain.com/docs/get_started/introduction)
   - Document Splitting
-  - Setting up and using VercelPostgres as VectorDb
+  - Embedding using VercelPostgres as Vector Database
 - Retrieval
-- Complex & Conditional Chaining with Langchain Expression Language
-- Streaming (simplified with Vercel AI SDK - for advanced streaming manipulation see the original Chat Langchain repo)
+- Langchain Expression Language (Sequences & Conditional Chaining)
+- Streaming (simplified with Vercel AI SDK)
 
 This repository is fully inspired by the original Chat Langchain repository.
 
