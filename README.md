@@ -1,9 +1,11 @@
 # Svelte Chat Langchain (mini version)
 
-This is a (mini) version of Chat Langchain (https://github.com/langchain-ai/chat-langchain) implemented in SvelteKit!
+This is a (mini) version of Chat Langchain implemented in SvelteKit!
 
 This repo can be a source of inspiration and starting point for developers looking to try their hand on a QA chatbot over Documents.
-It is held purposefully simple and easy to understand while still holding some complexity to be a good example.
+I call it a mini version because it the app is held purposefully simple and easy to understand while still holding some complexity to be a good example.
+
+For more advanced features such as Indexing / Record Management, user feedback and stream parsing to display sources, I highly recommend checking out the original Chat Langchain repository(https://github.com/langchain-ai/chat-langchain).
 
 This app features:
 
@@ -14,8 +16,6 @@ This app features:
 - Retrieval
 - Complex & Conditional Chaining with Langchain Expression Language
 - Streaming (simplified with Vercel AI SDK - for advanced streaming manipulation see the original Chat Langchain repo)
-
-I call it a mini version because it does however not include some of the more advanced features of the original Chat Langchain, such as Indexing / Record Management, user feedback and stream parsing to display sources.
 
 This repository is fully inspired by the original Chat Langchain repository. All credit goes to them.
 
