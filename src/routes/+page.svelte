@@ -61,6 +61,10 @@
 		max-width: 120px;
 	}
 
+	.messages-container {
+		margin-bottom: 100px;
+	}
+
 	form {
 		display: flex;
 		flex-direction: row;
