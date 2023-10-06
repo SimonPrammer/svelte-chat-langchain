@@ -57,8 +57,8 @@ export const POST = async ({ request }) => {
 		if (!process.env.OPENAI_API_KEY) throw new Error('No OPENAI_API_KEY env variable set!');
 
 		let result = null;
-		console.log('POST  result:', result);
-		//if already exists
+
+		//check if vector db already exists
 		const exists = await sql`
 			SELECT EXISTS (
 				SELECT FROM information_schema.tables 
@@ -70,7 +70,6 @@ export const POST = async ({ request }) => {
 		if (!exists?.rows[0]?.exists) {
 			const docs = await loadApiDocs();
 			const split_docs = await splitDocs(docs);
-
 			const vercelPostgresStore = await initVectorDb();
 			result = await vercelPostgresStore.addDocuments([...split_docs]);
 		} else {
