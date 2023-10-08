@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import '@picocss/pico';
 	import { useChat } from 'ai/svelte';
 
@@ -6,7 +6,8 @@
 	export let data;
 	// $: console.log('data:', data);
 
-	const { input, handleSubmit, messages } = useChat();
+	const { input, handleSubmit, messages, data: streamData } = useChat();
+
 
 	async function ingest() {
 		const res = await fetch('/api/ingest', {
@@ -31,6 +32,7 @@
 	</header>
 {/if}
 
+streamData: {$streamData}
 <div class="messages-container">
 	<ul>
 		{#each $messages as message}

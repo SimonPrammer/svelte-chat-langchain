@@ -1,5 +1,5 @@
 // path: /api/chat/+server.ts
-import { StreamingTextResponse, type Message } from 'ai';
+import { StreamingTextResponse, type Message, experimental_StreamData } from 'ai';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { RunnableSequence } from 'langchain/schema/runnable';
 import { BytesOutputParser, StringOutputParser } from 'langchain/schema/output_parser';
@@ -104,7 +104,21 @@ export const POST = async ({ request }) => {
 	const stream = await chain.stream({
 		question: messages.pop(),
 		chat_history: messages
+	}, {
+		// callbacks:{
+		// 	experimental_streamData: true,
+		// },
+		experimental_streamData: true,
+		
 	});
 
-	return new StreamingTextResponse(stream);
+	const data = new experimental_StreamData();
+	data.append({
+		text: 'Hello, how are you?',
+	  });
+	return new StreamingTextResponse(stream,{
+		headers: {
+			'X-Experimental-Stream-Data': 'true'
+		}
+	},data);
 };
