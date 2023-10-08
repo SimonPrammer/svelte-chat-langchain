@@ -13,30 +13,32 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^2.0.0",
-		"@sveltejs/kit": "^1.20.4",
-		"@typescript-eslint/eslint-plugin": "^6.0.0",
-		"@typescript-eslint/parser": "^6.0.0",
-		"eslint": "^8.28.0",
-		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-svelte": "^2.30.0",
-		"prettier": "^2.8.0",
-		"prettier-plugin-svelte": "^2.10.1",
-		"svelte": "^4.0.5",
-		"svelte-check": "^3.4.3",
-		"tslib": "^2.4.1",
-		"typescript": "^5.0.0",
-		"vite": "^4.4.2",
-		"vitest": "^0.34.0"
+		"@sveltejs/adapter-auto": "^2.1.0",
+		"@sveltejs/kit": "^1.25.1",
+		"@typescript-eslint/eslint-plugin": "^6.7.4",
+		"@typescript-eslint/parser": "^6.7.4",
+		"eslint": "^8.51.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-svelte": "^2.34.0",
+		"prettier": "^3.0.3",
+		"prettier-plugin-svelte": "^3.0.3",
+		"svelte": "^4.2.1",
+		"svelte-check": "^3.5.2",
+		"tslib": "^2.6.2",
+		"typescript": "^5.2.2",
+		"vite": "^4.4.11",
+		"vitest": "^0.34.6"
 	},
 	"type": "module",
 	"dependencies": {
+		"@microsoft/fetch-event-source": "^2.0.1",
 		"@picocss/pico": "^1.5.10",
 		"@vercel/postgres": "^0.5.0",
-		"ai": "^2.2.13",
+		"ai": "^2.2.14",
 		"dotenv-expand": "^10.0.0",
+		"fast-json-patch": "^3.1.1",
 		"html-to-text": "^9.0.5",
 		"jsdom": "^22.1.0",
-		"langchain": "^0.0.156"
+		"langchain": "^0.0.163"
 	}
 }

@@ -1,5 +1,4 @@
 // path: /api/chat/+server.ts
-import { StreamingTextResponse, type Message } from 'ai';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { RunnableSequence } from 'langchain/schema/runnable';
 import { BytesOutputParser, StringOutputParser } from 'langchain/schema/output_parser';
@@ -8,6 +7,7 @@ import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { ChatPromptTemplate, PromptTemplate } from 'langchain/prompts';
 import type { Config } from '@sveltejs/kit';
 import type { Document } from 'langchain/document.js';
+import type { Message } from 'ai';
 
 export const config: Config = {
 	runtime: 'edge'
@@ -85,7 +85,7 @@ export const POST = async ({ request }) => {
 				getRetriever,
 				(docs: Document[]) =>
 					docs.map((doc, i) => `<doc id='${i}'>${doc.pageContent}</doc>`).join('\n')
-			]),
+			]).withConfig({ runName: "FindDocs" }),
 			question: (input: ChainInput) => input.question.content,
 			chat_history: (input: ChainInput) =>
 				input.chat_history.map((message) => `${message.role}: ${message.content}`).join('\n')
@@ -98,13 +98,41 @@ export const POST = async ({ request }) => {
 			modelName: 'gpt-3.5-turbo-16k',
 			temperature: 0
 		}),
-		new BytesOutputParser()
+		// new BytesOutputParser()
+		new StringOutputParser()
 	]);
 
-	const stream = await chain.stream({
+	const stream = await chain.streamLog({
 		question: messages.pop(),
 		chat_history: messages
 	});
 
-	return new StreamingTextResponse(stream);
+
+
+	// Only return a selection of output to the frontend
+    const textEncoder = new TextEncoder();
+    const clientStream = new ReadableStream({
+      async start(controller) {
+        for await (const chunk of stream) {
+        // console.log('forawait  chunk:', chunk);
+        // console.log('encoded  chunk:',  textEncoder.encode(
+		// 	"event: data\ndata: " + JSON.stringify(chunk) + "\n\n",
+		//   ));
+		
+      
+          controller.enqueue(
+            textEncoder.encode(
+              "event: data\ndata: " + JSON.stringify(chunk) + "\n\n",
+            ),
+          );
+        }
+        controller.enqueue(textEncoder.encode("event: end\n\n"));
+        controller.close();
+      },
+    });
+
+    return new Response(clientStream, {
+      headers: { "Content-Type": "text/event-stream" },
+    });
+
 };
