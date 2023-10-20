@@ -8,9 +8,9 @@ It is best used as reference to learn the basics of a QA chatbot over Documents 
 
 ## Links
 
-Blog post - Step by step tutorial: https://simon-prammer.vercel.app/blog/post/easiest-qa-chatbot
-Blog post - Introduction to Chatbots: https://simon-prammer.vercel.app/blog/post/sveltekit-langchain
-Deployed version: https://svelte-chat-langchain.vercel.app/
+- Blog post - Step by step tutorial: https://simon-prammer.vercel.app/blog/post/easiest-qa-chatbot
+- Blog post - Introduction to Chatbots: https://simon-prammer.vercel.app/blog/post/sveltekit-langchain
+- Deployed version: https://svelte-chat-langchain.vercel.app/
 
 ## Features
 
@@ -24,20 +24,17 @@ This app features:
 - Langchain Expression Language (Sequences & Conditional Chaining)
 - Streaming (simplified with Vercel AI SDK)
 
+## Honorable Mentions
+
 This repository is fully inspired by the original Chat Langchain repository.
 
 For more advanced features such as Indexing / Record Management, user feedback and stream parsing to display sources, I highly recommend checking out the original Chat Langchain repository(https://github.com/langchain-ai/chat-langchain).
 
-Langchain Chat Website:
-https://chat.langchain.com/
+- Langchain Chat Website: https://chat.langchain.com/
+- Langchain Chat Github: https://github.com/langchain-ai/chat-langchain
+- Langchain Blog: https://blog.langchain.dev/building-chat-langchain-2/
 
-Langchain Chat Github:
-https://github.com/langchain-ai/chat-langchain
-
-Langchain Blog:
-https://blog.langchain.dev/building-chat-langchain-2/
-
-## Setup
+# Setup
 
 ### IMPORTANT - Set environment variables in a .env file (see .env.example for reference).
 
