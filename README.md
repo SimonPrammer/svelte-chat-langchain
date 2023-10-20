@@ -6,11 +6,13 @@ The Template is held purposefully simple in its implementation while still beein
 
 It is best used as reference to learn the basics of a QA chatbot over Documents or a starting point for your own custom implementation.
 
+## Links
+
+Blog post - Step by step tutorial: https://simon-prammer.vercel.app/blog/post/easiest-qa-chatbot
+Blog post - Introduction to Chatbots: https://simon-prammer.vercel.app/blog/post/sveltekit-langchain
 Deployed version: https://svelte-chat-langchain.vercel.app/
 
-If you are completely new to Chatbots or any of the technologies used in this repository, this blog post is a good starting point: https://simon-prammer.vercel.app/blog/post/sveltekit-langchain
-
-For more advanced features such as Indexing / Record Management, user feedback and stream parsing to display sources, I highly recommend checking out the original Chat Langchain repository(https://github.com/langchain-ai/chat-langchain).
+## Features
 
 This app features:
 
@@ -23,6 +25,8 @@ This app features:
 - Streaming (simplified with Vercel AI SDK)
 
 This repository is fully inspired by the original Chat Langchain repository.
+
+For more advanced features such as Indexing / Record Management, user feedback and stream parsing to display sources, I highly recommend checking out the original Chat Langchain repository(https://github.com/langchain-ai/chat-langchain).
 
 Langchain Chat Website:
 https://chat.langchain.com/

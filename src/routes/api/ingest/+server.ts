@@ -1,5 +1,3 @@
-//try vercel postgres as vectorstore?
-
 import { json } from '@sveltejs/kit';
 import { compile } from 'html-to-text';
 import { RecursiveUrlLoader } from 'langchain/document_loaders/web/recursive_url';
