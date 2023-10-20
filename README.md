@@ -8,9 +8,9 @@ It is best used as reference to learn the basics of a QA chatbot over Documents 
 
 ## Links
 
-- Blog post - Step by step tutorial: https://simon-prammer.vercel.app/blog/post/easiest-qa-chatbot
-- Blog post - Introduction to Chatbots: https://simon-prammer.vercel.app/blog/post/sveltekit-langchain
 - Deployed version: https://svelte-chat-langchain.vercel.app/
+- Step by step tutorial: https://simon-prammer.vercel.app/blog/post/easiest-qa-chatbot
+- Introduction to Chatbots: https://simon-prammer.vercel.app/blog/post/sveltekit-langchain
 
 ## Features
 
@@ -20,13 +20,13 @@ This app features:
   - Document Loading (from Langchain JS docs https://js.langchain.com/docs/get_started/introduction)
   - Document Splitting
   - Embedding using VercelPostgres as Vector Database
-- Retrieval
+- RAG (Retrieval Augmented Generation)
 - Langchain Expression Language (Sequences & Conditional Chaining)
 - Streaming (simplified with Vercel AI SDK)
 
 ## Honorable Mentions
 
-This repository is fully inspired by the original Chat Langchain repository.
+This repository is heavily inspired by the original Chat Langchain repository.
 
 For more advanced features such as Indexing / Record Management, user feedback and stream parsing to display sources, I highly recommend checking out the original Chat Langchain repository(https://github.com/langchain-ai/chat-langchain).
 
