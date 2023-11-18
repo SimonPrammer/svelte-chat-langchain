@@ -10,6 +10,7 @@ It is best used as reference to learn the basics of a QA chatbot over Documents 
 
 - Step by step tutorial: https://simon-prammer.vercel.app/blog/post/easiest-qa-chatbot
 - Introduction to Chatbots: https://simon-prammer.vercel.app/blog/post/sveltekit-langchain
+  (sadly I had to take down the deployed version because it was abused by some users. If you want to see it in action, feel free to deploy it yourself!)
 
 ## Features
 
