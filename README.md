@@ -8,7 +8,6 @@ It is best used as reference to learn the basics of a QA chatbot over Documents 
 
 ## Links
 
-- Deployed version: https://svelte-chat-langchain.vercel.app/
 - Step by step tutorial: https://simon-prammer.vercel.app/blog/post/easiest-qa-chatbot
 - Introduction to Chatbots: https://simon-prammer.vercel.app/blog/post/sveltekit-langchain
 
